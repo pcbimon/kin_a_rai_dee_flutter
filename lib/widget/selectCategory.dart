@@ -14,10 +14,10 @@ class category extends StatelessWidget {
           Card(
             shape: selected
                 ? new RoundedRectangleBorder(
-                    side: new BorderSide(color: Colors.blue, width: 2.0),
+                    side: new BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
                     borderRadius: BorderRadius.circular(4.0))
                 : new RoundedRectangleBorder(
-                    side: new BorderSide(color: Colors.white, width: 2.0),
+                    side: new BorderSide(color: Theme.of(context).cardColor, width: 2.0),
                     borderRadius: BorderRadius.circular(4.0)),
             child: Container(margin: EdgeInsets.all(30), child: Text(cats[i])),
           ),
