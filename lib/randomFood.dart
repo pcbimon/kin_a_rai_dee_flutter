@@ -9,7 +9,7 @@ class RandomFood extends StatefulWidget {
 }
 
 class _RandomFoodState extends State<RandomFood> {
-  final List<String> foodNationality = [
+  List<String> foodNationality = [
     'ไทย',
     'จีน',
     'ญี่ปุ่น',
@@ -20,6 +20,7 @@ class _RandomFoodState extends State<RandomFood> {
   double _maxCalories = 2000;
   double _minCalories = 0;
   double _selectedCalories = 500;
+  String _selectNationality = 'ไทย';
   void onPressedCategory(int selectedIndex) {
     setState(() {
       _selectedCategory = selectedIndex;
@@ -36,7 +37,11 @@ class _RandomFoodState extends State<RandomFood> {
       return inputCalories(_maxCalories,onChangeCalories);
     });
   }
-
+  void onChangeNationality(String? selectNational){
+    setState(() {
+      _selectNationality = selectNational!;
+    });
+  }
   final List<String> foodCategory = ['คาว', 'หวาน'];
 
   @override
@@ -133,7 +138,10 @@ class _RandomFoodState extends State<RandomFood> {
                             child: new Text(value),
                           );
                         }).toList(),
-                        onChanged: (val) {},
+                        value: _selectNationality,
+                        onChanged: (val) {
+                          onChangeNationality(val);
+                        },
                         hint: Text("กรุณาเลือกสัญชาติ"),
                       ),
                     ),
