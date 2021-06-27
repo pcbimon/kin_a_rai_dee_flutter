@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import './widget/selectCategory.dart';
 
-class RandomFood extends StatelessWidget {
+class RandomFood extends StatefulWidget {
+  @override
+  State<RandomFood> createState() => _RandomFoodState();
+}
+
+class _RandomFoodState extends State<RandomFood> {
   final List<String> foodNationality = [
     'ไทย',
     'จีน',
@@ -9,7 +14,16 @@ class RandomFood extends StatelessWidget {
     'ฝรั่งเศษ',
     'อเมริกา'
   ];
-  final List<String> foodCategory = ['คาว','หวาน'];
+  int _selectedCategory = 0;
+  void onPressedCategory(int selectedIndex) {
+    setState(() {
+      _selectedCategory = selectedIndex;
+      print(_selectedCategory);
+    });
+  }
+
+  final List<String> foodCategory = ['คาว', 'หวาน'];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +47,8 @@ class RandomFood extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      category(foodCategory,0)
+                      category(
+                          foodCategory, _selectedCategory, onPressedCategory)
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   )
