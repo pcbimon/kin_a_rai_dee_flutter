@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import './widget/selectCategory.dart';
 
 class RandomFood extends StatelessWidget {
-  final List<String> foodCategory = [
+  final List<String> foodNationality = [
     'ไทย',
     'จีน',
     'ญี่ปุ่น',
     'ฝรั่งเศษ',
     'อเมริกา'
   ];
+  final List<String> foodCategory = ['คาว','หวาน'];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,18 +33,7 @@ class RandomFood extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Card(
-                        child: Container(
-                          margin: EdgeInsets.all(30),
-                          child: Text("ของคาว"),
-                        ),
-                      ),
-                      Card(
-                        child: Container(
-                          margin: EdgeInsets.all(30),
-                          child: Text("ของหวาน"),
-                        ),
-                      ),
+                      category(foodCategory,0)
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,
                   )
@@ -98,7 +89,7 @@ class RandomFood extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     child: DropdownButton<String>(
-                      items: foodCategory.map((String value) {
+                      items: foodNationality.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: new Text(value),
