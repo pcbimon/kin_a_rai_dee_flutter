@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import './widget/inputCalories.dart';
 import './widget/selectCategory.dart';
 
 class RandomFood extends StatefulWidget {
@@ -15,10 +17,23 @@ class _RandomFoodState extends State<RandomFood> {
     'อเมริกา'
   ];
   int _selectedCategory = 0;
+  double _maxCalories = 2000;
+  double _minCalories = 0;
+  double _selectedCalories = 500;
   void onPressedCategory(int selectedIndex) {
     setState(() {
       _selectedCategory = selectedIndex;
       print(_selectedCategory);
+    });
+  }
+  void onChangeCalories(double cal){
+    setState(() {
+      _selectedCalories = cal;
+    });
+  }
+  void inputCustomCalories(BuildContext context){
+    showModalBottomSheet(context: context, builder: (_){
+      return inputCalories(_maxCalories,onChangeCalories);
     });
   }
 
@@ -26,105 +41,114 @@ class _RandomFoodState extends State<RandomFood> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Card(
-            child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "ประเภทอาหาร",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Card(
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "ประเภทอาหาร",
+                        style:
+                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      category(
-                          foodCategory, _selectedCategory, onPressedCategory)
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  )
-                ],
+                    Row(
+                      children: [
+                        category(
+                            foodCategory, _selectedCategory, onPressedCategory)
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Card(
-            child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "พลังงาน",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            Card(
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "พลังงาน",
+                        style:
+                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "500 Cal",
-                      style: TextStyle(fontSize: 14),
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          NumberFormat('#,###').format(_selectedCalories)+" Cal",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      onTap: (){
+                        inputCustomCalories(context);
+                      },
                     ),
-                  ),
-                  Container(
+                    Container(
+                        alignment: Alignment.center,
+                        child: Slider(
+                            value: _selectedCalories, min: _minCalories, max: _maxCalories, onChanged: (val) {
+                          onChangeCalories(val);
+                        }))
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "สัญชาติ",
+                        style:
+                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
                       alignment: Alignment.center,
-                      child: Slider(
-                          value: 500, min: 0, max: 1000, onChanged: (val) {}))
-                ],
+                      child: DropdownButton<String>(
+                        items: foodNationality.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (val) {},
+                        hint: Text("กรุณาเลือกสัญชาติ"),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Card(
-            child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      "สัญชาติ",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: DropdownButton<String>(
-                      items: foodNationality.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: new Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (val) {},
-                      hint: Text("กรุณาเลือกสัญชาติ"),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.shuffle), Text("Random Food")],
-              ))
-        ],
+            ElevatedButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Icon(Icons.shuffle), Text("Random Food")],
+                ))
+          ],
+        ),
       ),
     );
   }
