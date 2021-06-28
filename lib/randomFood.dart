@@ -32,9 +32,9 @@ class _RandomFoodState extends State<RandomFood> {
       _selectedCalories = cal;
     });
   }
-  void inputCustomCalories(BuildContext context){
+  void inputCustomCalories(BuildContext context,double currentCal){
     showModalBottomSheet(context: context, builder: (_){
-      return inputCalories(_maxCalories,onChangeCalories);
+      return inputCalories(_maxCalories,currentCal,onChangeCalories);
     });
   }
   void onChangeNationality(String? selectNational){
@@ -101,7 +101,7 @@ class _RandomFoodState extends State<RandomFood> {
                         ),
                       ),
                       onTap: (){
-                        inputCustomCalories(context);
+                        inputCustomCalories(context,_selectedCalories);
                       },
                     ),
                     Container(

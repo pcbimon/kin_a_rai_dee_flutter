@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class inputCalories extends StatefulWidget {
   final double maxCalories;
+  final double currentCalories;
   final Function setCalories;
-  inputCalories(this.maxCalories,this.setCalories);
+  inputCalories(this.maxCalories,this.currentCalories,this.setCalories);
 
   @override
   _inputCaloriesState createState() => _inputCaloriesState();
@@ -28,6 +29,10 @@ class _inputCaloriesState extends State<inputCalories> {
   }
   @override
   Widget build(BuildContext context) {
+    calController.text = NumberFormat('####').format(widget.currentCalories).toString();
+    calController.selection = TextSelection(
+        baseOffset: calController.text.length,
+        extentOffset: calController.text.length);
     return Form(
       key: _formKey,
       child: Card(
