@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './resultFood.dart';
 import './widget/inputCalories.dart';
 import './widget/selectCategory.dart';
 
@@ -27,22 +28,36 @@ class _RandomFoodState extends State<RandomFood> {
       print(_selectedCategory);
     });
   }
-  void onChangeCalories(double cal){
+
+  void onChangeCalories(double cal) {
     setState(() {
       _selectedCalories = cal;
     });
   }
-  void inputCustomCalories(BuildContext context,double currentCal){
-    showModalBottomSheet(context: context, builder: (_){
-      return inputCalories(_maxCalories,currentCal,onChangeCalories);
-    });
+
+  void inputCustomCalories(BuildContext context, double currentCal) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return inputCalories(_maxCalories, currentCal, onChangeCalories);
+        });
   }
-  void onChangeNationality(String? selectNational){
+
+  void onChangeNationality(String? selectNational) {
     setState(() {
       _selectNationality = selectNational!;
     });
   }
+
   final List<String> foodCategory = ['คาว', 'หวาน'];
+  void RandomFood(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ResultFood('ผัดผัก', 'ไทย', 'assets/images/food1.jpg'),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +77,8 @@ class _RandomFoodState extends State<RandomFood> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
                         "ประเภทอาหาร",
-                        style:
-                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Row(
@@ -88,28 +103,32 @@ class _RandomFoodState extends State<RandomFood> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
                         "พลังงาน",
-                        style:
-                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
                     GestureDetector(
                       child: Container(
                         alignment: Alignment.center,
                         child: Text(
-                          NumberFormat('#,###').format(_selectedCalories)+" Cal",
+                          NumberFormat('#,###').format(_selectedCalories) +
+                              " Cal",
                           style: TextStyle(fontSize: 14),
                         ),
                       ),
-                      onTap: (){
-                        inputCustomCalories(context,_selectedCalories);
+                      onTap: () {
+                        inputCustomCalories(context, _selectedCalories);
                       },
                     ),
                     Container(
                         alignment: Alignment.center,
                         child: Slider(
-                            value: _selectedCalories, min: _minCalories, max: _maxCalories, onChanged: (val) {
-                          onChangeCalories(val);
-                        }))
+                            value: _selectedCalories,
+                            min: _minCalories,
+                            max: _maxCalories,
+                            onChanged: (val) {
+                              onChangeCalories(val);
+                            }))
                   ],
                 ),
               ),
@@ -125,8 +144,8 @@ class _RandomFoodState extends State<RandomFood> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
                         "สัญชาติ",
-                        style:
-                            TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(
@@ -150,7 +169,9 @@ class _RandomFoodState extends State<RandomFood> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  RandomFood(context);
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Icon(Icons.shuffle), Text("Random Food")],
