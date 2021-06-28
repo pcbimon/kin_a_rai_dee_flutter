@@ -29,10 +29,10 @@ class _inputCaloriesState extends State<inputCalories> {
   }
   @override
   Widget build(BuildContext context) {
-    calController.text = NumberFormat('####').format(widget.currentCalories).toString();
-    calController.selection = TextSelection(
-        baseOffset: calController.text.length,
-        extentOffset: calController.text.length);
+    // calController.text = NumberFormat('####').format(widget.currentCalories).toString();
+    // calController.selection = TextSelection(
+    //     baseOffset: calController.text.length,
+    //     extentOffset: calController.text.length);
     return Form(
       key: _formKey,
       child: Card(
