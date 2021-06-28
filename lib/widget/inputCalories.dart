@@ -44,7 +44,7 @@ class _inputCaloriesState extends State<inputCalories> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Selected Calories'),
                   keyboardType: TextInputType.number,
-                  // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (val){
                     if(val != null && double.parse(val)>widget.maxCalories){
                       String maxStr = NumberFormat('#,###').format(widget.maxCalories);
