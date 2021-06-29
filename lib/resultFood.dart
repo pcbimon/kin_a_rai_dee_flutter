@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import './model/food.dart';
 
 class ResultFood extends StatelessWidget {
-  final String foodName;
-  final String foodCategory;
-  final String foodImage;
-  ResultFood(this.foodName,this.foodCategory,this.foodImage);
+  final Food food;
+  ResultFood(this.food);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class ResultFood extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 4 / 3,
                     child: Image(
-                      image: AssetImage(foodImage),
+                      image: AssetImage(food.img),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -43,7 +42,7 @@ class ResultFood extends StatelessWidget {
                     Container(
                       child: FittedBox(
                         child: Text(
-                          foodName,
+                          food.foodName,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14),
                         ),
@@ -54,7 +53,7 @@ class ResultFood extends StatelessWidget {
                       margin: EdgeInsets.all(10),
                       child: FittedBox(
                         child:
-                            Text(foodCategory, style: TextStyle(fontSize: 14)),
+                            Text(food.foodCategory, style: TextStyle(fontSize: 14)),
                       ),
                     )
                   ],
