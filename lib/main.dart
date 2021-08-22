@@ -33,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _currentTab = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +42,24 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Container(
-        child: RandomFood(),
+      body: [RandomFood()][_currentTab],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) => setState(() => _currentTab = index),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shuffle),
+            label: 'Random',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Basic',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'About ME',
+          ),
+        ],
       ),
     );
   }
