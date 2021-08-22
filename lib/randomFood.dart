@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:json_store/json_store.dart';
+import 'package:kin_a_rai_dee/main.dart';
 import './model/food.dart';
 import './resultFood.dart';
 import './widget/inputCalories.dart';
@@ -15,6 +16,17 @@ class RandomFood extends StatefulWidget {
 }
 
 class _RandomFoodState extends State<RandomFood> {
+  @override
+  initState() {
+    super.initState();
+    loaddata();
+  }
+
+  Future<void> loaddata() async {
+    await MyDB().initFood();
+    foods = await MyDB().loadFromStorage();
+  }
+
   List<String> foodNationality = [
     'ไทย',
     'จีน',
@@ -28,16 +40,6 @@ class _RandomFoodState extends State<RandomFood> {
   double _selectedCalories = 500;
   String _selectNationality = 'ไทย';
   List<Food> foods = [];
-  Future<void> _loadFoods() async {
-    // foods = await MyDB().loadFromStorage();
-    Map<String, dynamic>? json = await JsonStore().getItem('foods');
-
-    foods = json != null
-        ? json['value'].map<Food>((foodJson) {
-            return Food.fromJson(foodJson);
-          }).toList()
-        : [];
-  }
 
   void onPressedCategory(int selectedIndex) {
     setState(() {
@@ -94,7 +96,6 @@ class _RandomFoodState extends State<RandomFood> {
 
   @override
   Widget build(BuildContext context) {
-    _loadFoods();
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(10),

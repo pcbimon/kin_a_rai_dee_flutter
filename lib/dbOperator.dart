@@ -16,7 +16,7 @@ class MyDB {
   Future<List<Food>> loadFromStorage() async {
     Map<String, dynamic>? json = await JsonStore().getItem('foods');
 
-    var _listfoods = json != null
+    List<Food> _listfoods = json != null
         ? json['value'].map<Food>((foodJson) {
             return Food.fromJson(foodJson);
           }).toList()
@@ -24,7 +24,12 @@ class MyDB {
     return _listfoods;
   }
 
-  initFood() async => await saveToStorage(foods);
+  initFood() async {
+    final _jsonStore = JsonStore(dbName: 'foodDB');
+    _jsonStore.clearDataBase();
+    await saveToStorage(foods);
+  }
+
   saveToStorage(List<Food> foods) async {
     await JsonStore().setItem('foods', {
       'value': foods.map((foodJson) {

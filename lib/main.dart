@@ -10,17 +10,10 @@ void main() {
   runApp(MyApp());
 }
 
-initFood() async {
-  await MyDB().initFood();
-}
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final _jsonStore = JsonStore(dbName: 'foodDB');
-    _jsonStore.clearDataBase();
-    initFood();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
