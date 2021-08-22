@@ -45,7 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: [RandomFood(), RandomFood(), RandomFood()][_currentTab],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        onTap: (index) => setState(() => _currentTab = index),
+        onTap: (index) => {setState(() => _currentTab = index)},
+        currentIndex: _currentTab,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.shuffle),
