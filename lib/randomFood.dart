@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:json_store/json_store.dart';
 import './model/food.dart';
 import './resultFood.dart';
 import './widget/inputCalories.dart';
 import './widget/selectCategory.dart';
+import 'dbOperator.dart';
 
 class RandomFood extends StatefulWidget {
   @override
@@ -25,14 +27,18 @@ class _RandomFoodState extends State<RandomFood> {
   double _minCalories = 0;
   double _selectedCalories = 500;
   String _selectNationality = 'ไทย';
-  List<Food> foods = [
-    new Food('ผัดผักรวม', 'คาว', 500, 'ไทย', 'อาหารคาวเด่นปะจำชาติ',
-        'assets/images/food1.jpg'),
-    new Food('ข้าวผัด', 'คาว', 1000, 'ไทย', 'อาหารคาวเด่นประจำชาติ',
-        'assets/images/food2.jpg'),
-    new Food('สปาเก็ตตี้', 'คาว', 1500, 'อเมริกา', 'อาหารคาวเด่นประจำชาติ',
-        'assets/images/food3.jpg')
-  ];
+  List<Food> foods = [];
+  Future<void> _loadFoods() async {
+    // foods = await MyDB().loadFromStorage();
+    Map<String, dynamic>? json = await JsonStore().getItem('foods');
+
+    foods = json != null
+        ? json['value'].map<Food>((foodJson) {
+            return Food.fromJson(foodJson);
+          }).toList()
+        : [];
+  }
+
   void onPressedCategory(int selectedIndex) {
     setState(() {
       _selectedCategory = selectedIndex;
@@ -88,6 +94,7 @@ class _RandomFoodState extends State<RandomFood> {
 
   @override
   Widget build(BuildContext context) {
+    _loadFoods();
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(10),

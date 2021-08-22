@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:json_store/json_store.dart';
+
+import 'dbOperator.dart';
+import 'model/food.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+initFood() async {
+  await MyDB().initFood();
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final _jsonStore = JsonStore(dbName: 'foodDB');
+    _jsonStore.clearDataBase();
+    initFood();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-        textTheme: GoogleFonts.kanitTextTheme(
-          Theme.of(context).textTheme
-        )
-      ),
+          primarySwatch: Colors.amber,
+          textTheme: GoogleFonts.kanitTextTheme(Theme.of(context).textTheme)),
       home: MyHomePage(title: 'กินอะไรดี'),
     );
   }
@@ -32,7 +40,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
