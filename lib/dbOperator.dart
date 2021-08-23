@@ -1,10 +1,35 @@
 import 'package:sqflite/sqflite.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:path/path.dart';
 
 import 'model/food.dart';
 
 class MyDB {
   /// The database when opened.
   late Database db;
+
+  /// delete the db, create the folder and returnes its path
+  Future<String> initDeleteDb(String dbName) async {
+    final databasePath = await getDatabasesPath();
+    // print(databasePath);
+    final path = join(databasePath, dbName);
+
+    // make sure the folder exists
+    // ignore: avoid_slow_async_io
+    if (await Directory(dirname(path)).exists()) {
+      await deleteDatabase(path);
+    } else {
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (e) {
+        print(e);
+      }
+    }
+    return path;
+  }
+
   // Open the database.
   Future open(String path) async {
     db = await openDatabase(path, version: 1,
