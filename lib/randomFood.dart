@@ -23,8 +23,8 @@ class _RandomFoodState extends State<RandomFood> {
   }
 
   Future<void> loaddata() async {
-    await MyDB().initFood();
-    foods = await MyDB().loadFromStorage();
+    // await MyDB().initFood();
+    // foods = await MyDB().loadFromStorage();
   }
 
   List<String> foodNationality = [
