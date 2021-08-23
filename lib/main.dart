@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kin_a_rai_dee/page/food_lists.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:json_store/json_store.dart';
@@ -34,6 +35,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentTab = 0;
+  final dbHelper = DatabaseHelper.instance;
+  Future<void> _addNewFood() async {
+    var getAll = await dbHelper.queryAllRows();
+    String foodNameIndex = getAll.length.toString();
+    Food food = new Food('Food$foodNameIndex', 'Cat1', 500, 'Thai', '123',
+        'assets/images/food1.jpg');
+    Food newFood = await dbHelper.insert(food);
+
+    print(getAll.length);
+    FoodLists().createState().initState();
+    // List<Food>? foods = await MyDB().getFoods();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: [RandomFood(), RandomFood(), RandomFood()][_currentTab],
+      body: [RandomFood(), FoodLists(), RandomFood()][_currentTab],
+      // key point, fab will show in Tab 1, and will hide in others.
+      floatingActionButton: _currentTab == 1
+          ? FloatingActionButton(
+              onPressed: () {
+                _addNewFood();
+              },
+              child: Icon(Icons.add),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (index) => {setState(() => _currentTab = index)},

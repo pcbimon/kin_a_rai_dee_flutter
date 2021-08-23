@@ -3,87 +3,77 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'model/food.dart';
 
-class MyDB {
+class DatabaseHelper {
+  static final _databaseName = "Food.db";
+  static final _databaseVersion = 1;
+
+  /// make this a singleton class
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
   /// The database when opened.
-  late Database db;
-
-  /// delete the db, create the folder and returnes its path
-  Future<String> initDeleteDb(String dbName) async {
-    final databasePath = await getDatabasesPath();
-    // print(databasePath);
-    final path = join(databasePath, dbName);
-
-    // make sure the folder exists
-    // ignore: avoid_slow_async_io
-    if (await Directory(dirname(path)).exists()) {
-      await deleteDatabase(path);
-    } else {
-      try {
-        await Directory(dirname(path)).create(recursive: true);
-      } catch (e) {
-        print(e);
-      }
-    }
-    return path;
+  late Database _database;
+  Future<Database> get database async {
+    // if (_database != null) return _database;
+    // lazily instantiate the db the first time it is accessed
+    _database = await _initDatabase();
+    return _database;
   }
 
-  // Open the database.
-  Future open(String path) async {
-    db = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute('''
+  // this opens the database (and creates it if it doesn't exist)
+  _initDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    return await openDatabase(path,
+        version: _databaseVersion, onCreate: _onCreate);
+  }
+
+  // SQL code to create the database table
+  Future _onCreate(Database db, int version) async {
+    await db.execute('''
 create table $tableFood ( 
   $columnId integer primary key autoincrement, 
   $columnFoodName text not null,
   $columnFoodCategory text not null,
-  $columnCalories integer not null,
+  $columnCalories double not null,
   $columnNationality text not null,
   $columnDescription text not null,
   $columnImg text not null)
 ''');
-    });
   }
 
-  /// Insert a Food.
+  // Helper methods
+
+  // Inserts a row in the database where each key in the Map is a column name
+  // and the value is the column value. The return value is the id of the
+  // inserted row.
   Future<Food> insert(Food food) async {
+    Database db = await instance.database;
     food.id = await db.insert(tableFood, food.toMap());
     return food;
   }
 
-  /// Get a Food.
-  Future<Food?> getFoodById(int id) async {
-    List<Map> maps = await db.query(tableFood,
-        columns: [
-          columnId,
-          columnFoodName,
-          columnFoodCategory,
-          columnCalories,
-          columnNationality,
-          columnDescription,
-          columnImg
-        ],
-        where: '$columnId = ?',
-        whereArgs: [id]);
+  // All of the rows are returned as a list of maps, where each map is
+  // a key-value list of columns.
+  Future<List<Food>> queryAllRows() async {
+    Database db = await instance.database;
+    List<Food> foods = [];
+    List<Map> maps = await db.query(tableFood);
     if (maps.isNotEmpty) {
-      return Food.fromMap(maps.first);
+      maps.forEach((element) {
+        foods.add(new Food(
+            element[columnFoodName],
+            element[columnFoodCategory],
+            element[columnCalories].toDouble(),
+            element[columnNationality],
+            element[columnDescription],
+            element[columnImg]));
+      });
     }
-    return null;
+    return foods;
   }
-
-  /// Delete a food.
-  Future<int> delete(int id) async {
-    return await db.delete(tableFood, where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  /// Update a food.
-  Future<int> update(Food food) async {
-    return await db.update(tableFood, food.toMap(),
-        where: '$columnId = ?', whereArgs: [food.id!]);
-  }
-
-  /// Close database.
-  Future close() async => db.close();
 }
