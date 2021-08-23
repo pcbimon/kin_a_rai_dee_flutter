@@ -32,6 +32,14 @@ class _FoodListsState extends State<FoodLists> {
     items = await dbHelper.queryAllRows();
   }
 
+  updateFoodList() async {
+    List<Food> getFoods = await dbHelper.queryAllRows();
+    setState(() {
+      items = getFoods;
+    });
+    Utils.showSnackBar(context, "Update Foods");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

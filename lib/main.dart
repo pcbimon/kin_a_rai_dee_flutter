@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Food newFood = await dbHelper.insert(food);
 
     print(getAll.length);
-    FoodLists().createState().initState();
+    await FoodLists().createState().updateFoodList();
     // List<Food>? foods = await MyDB().getFoods();
   }
 
