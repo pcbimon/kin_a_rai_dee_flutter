@@ -7,35 +7,32 @@ import '../dbOperator.dart';
 import '../utils.dart';
 
 class FoodLists extends StatefulWidget {
-  const FoodLists({Key? key}) : super(key: key);
+  final List<Food> foods;
+  final Function refreshFoodList;
+  const FoodLists(this.foods, this.refreshFoodList);
 
   @override
-  _FoodListsState createState() => _FoodListsState();
+  _FoodListsState createState() => _FoodListsState(foods);
 }
 
 class _FoodListsState extends State<FoodLists> {
-  final dbHelper = DatabaseHelper.instance;
+  List<Food> items;
+  _FoodListsState(this.items);
   // List<Food> items = [
   //   new Food('foodName', 'foodCategory', 500, 'nationality', 'description',
   //       'assets/images/food1.jpg'),
   //   new Food('foodName', 'foodCategory', 500, 'nationality', 'description',
   //       'assets/images/food2.jpg')
   // ];
-  List<Food> items = [];
+
   @override
   initState() {
     super.initState();
-    initDB();
-  }
-
-  Future<void> initDB() async {
-    items = await dbHelper.queryAllRows();
   }
 
   updateFoodList() async {
-    List<Food> getFoods = await dbHelper.queryAllRows();
     setState(() {
-      items = getFoods;
+      items = widget.foods;
     });
     Utils.showSnackBar(context, "Update Foods");
   }

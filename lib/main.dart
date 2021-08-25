@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/page/food_lists.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:json_store/json_store.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:kin_a_rai_dee/utils.dart';
 
 import 'dbOperator.dart';
 import 'model/food.dart';
@@ -34,18 +37,46 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<Food> foods = [];
+  final _random = new Random();
+  @override
+  initState() {
+    refreshFoodList();
+    super.initState();
+  }
+
   int _currentTab = 0;
+
   final dbHelper = DatabaseHelper.instance;
   Future<void> _addNewFood() async {
-    var getAll = await dbHelper.queryAllRows();
-    String foodNameIndex = getAll.length.toString();
-    Food food = new Food('Food$foodNameIndex', 'Cat1', 500, 'Thai', '123',
-        'assets/images/food1.jpg');
-    Food newFood = await dbHelper.insert(food);
+    String foodNameIndex = foods.length.toString();
 
-    print(getAll.length);
-    await FoodLists().createState().updateFoodList();
+    Food food = new Food(
+        'Food$foodNameIndex',
+        foodCategory[_random.nextInt(1)],
+        _random.nextInt(2000).toDouble(),
+        foodNationality[_random.nextInt(4)],
+        '123',
+        'assets/images/food${_random.nextInt(2) + 1}.jpg');
+    await dbHelper.insert(food);
+    await refreshFoodList();
     // List<Food>? foods = await MyDB().getFoods();
+  }
+
+  _clearDatabase() async {
+    await dbHelper.removeAllFood();
+    refreshFoodList();
+  }
+
+  refreshFoodList() async {
+    var getAll = await dbHelper.queryAllRows();
+    setState(() {
+      foods.clear();
+      getAll.forEach((food) {
+        foods.add(food);
+      });
+      print('Current Food : ${foods.length}');
+    });
   }
 
   @override
@@ -56,16 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: [RandomFood(), FoodLists(), RandomFood()][_currentTab],
+      body: [
+        RandomFood(foods),
+        FoodLists(foods, refreshFoodList),
+        RandomFood(foods)
+      ][_currentTab],
       // key point, fab will show in Tab 1, and will hide in others.
-      floatingActionButton: _currentTab == 1
-          ? FloatingActionButton(
-              onPressed: () {
-                _addNewFood();
-              },
-              child: Icon(Icons.add),
-            )
-          : null,
+      floatingActionButton: _currentTab == 1 ? GroupFloating() : null,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (index) => {setState(() => _currentTab = index)},
@@ -85,6 +113,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  SpeedDial GroupFloating() {
+    return SpeedDial(
+      icon: Icons.menu,
+      activeIcon: Icons.close,
+      spacing: 3,
+      buttonSize: 56,
+      children: [
+        SpeedDialChild(
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          onTap: () => _addNewFood(),
+        ),
+        SpeedDialChild(
+          child: Icon(Icons.remove_circle_outline),
+          backgroundColor: Colors.deepOrangeAccent,
+          foregroundColor: Colors.white,
+          onTap: () => _clearDatabase(),
+        )
+      ],
     );
   }
 }

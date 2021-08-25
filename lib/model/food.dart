@@ -10,6 +10,16 @@ final String columnCalories = 'calories';
 final String columnNationality = 'nationality';
 final String columnDescription = 'description';
 final String columnImg = 'img';
+final List<String> foodCategory = ['คาว', 'หวาน'];
+final List<String> foodNationality = [
+  'ไทย',
+  'จีน',
+  'ญี่ปุ่น',
+  'ฝรั่งเศษ',
+  'อเมริกา'
+];
+final double maxCalories = 2000;
+final double minCalories = 0;
 
 class Food {
   int? id;

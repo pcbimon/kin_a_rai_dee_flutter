@@ -11,11 +11,16 @@ import './widget/selectCategory.dart';
 import 'dbOperator.dart';
 
 class RandomFood extends StatefulWidget {
+  final List<Food> listFood;
+  RandomFood(this.listFood);
   @override
-  State<RandomFood> createState() => _RandomFoodState();
+  State<RandomFood> createState() => _RandomFoodState(listFood);
 }
 
 class _RandomFoodState extends State<RandomFood> {
+  List<Food> foods;
+  _RandomFoodState(this.foods);
+
   @override
   initState() {
     super.initState();
@@ -27,19 +32,10 @@ class _RandomFoodState extends State<RandomFood> {
     // foods = await MyDB().loadFromStorage();
   }
 
-  List<String> foodNationality = [
-    'ไทย',
-    'จีน',
-    'ญี่ปุ่น',
-    'ฝรั่งเศษ',
-    'อเมริกา'
-  ];
   int _selectedCategory = 0;
-  double _maxCalories = 2000;
-  double _minCalories = 0;
+
   double _selectedCalories = 500;
   String _selectNationality = 'ไทย';
-  List<Food> foods = [];
 
   void onPressedCategory(int selectedIndex) {
     setState(() {
@@ -58,7 +54,7 @@ class _RandomFoodState extends State<RandomFood> {
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          return inputCalories(_maxCalories, currentCal, onChangeCalories);
+          return inputCalories(maxCalories, currentCal, onChangeCalories);
         });
   }
 
@@ -68,7 +64,6 @@ class _RandomFoodState extends State<RandomFood> {
     });
   }
 
-  final List<String> foodCategory = ['คาว', 'หวาน'];
   final _random = new Random();
   void randomFood(BuildContext context) {
     //Filter food
@@ -159,8 +154,8 @@ class _RandomFoodState extends State<RandomFood> {
                         alignment: Alignment.center,
                         child: Slider(
                             value: _selectedCalories,
-                            min: _minCalories,
-                            max: _maxCalories,
+                            min: minCalories,
+                            max: maxCalories,
                             onChanged: (val) {
                               onChangeCalories(val);
                             }))

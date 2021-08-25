@@ -57,6 +57,11 @@ create table $tableFood (
     return food;
   }
 
+  Future<void> removeAllFood() async {
+    Database db = await instance.database;
+    await db.delete(tableFood);
+  }
+
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Food>> queryAllRows() async {
