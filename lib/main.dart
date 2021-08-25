@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kin_a_rai_dee/page/about_me.dart';
 import 'package:kin_a_rai_dee/page/food_lists.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -90,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: [
         RandomFood(foods),
         FoodLists(foods, refreshFoodList),
-        RandomFood(foods)
+        AboutMe()
       ][_currentTab],
       // key point, fab will show in Tab 1, and will hide in others.
       floatingActionButton: _currentTab == 1 ? GroupFloating() : null,
