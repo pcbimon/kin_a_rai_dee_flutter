@@ -71,6 +71,7 @@ create table $tableFood (
     if (maps.isNotEmpty) {
       maps.forEach((element) {
         foods.add(new Food(
+            element[columnId],
             element[columnFoodName],
             element[columnFoodCategory],
             element[columnCalories].toDouble(),

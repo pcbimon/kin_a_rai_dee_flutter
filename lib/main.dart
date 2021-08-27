@@ -50,24 +50,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentTab = 0;
 
   final dbHelper = DatabaseHelper.instance;
-  navigateNewFood(){
+  navigateNewFood() {
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => newFood(_addNewFood),
         ));
   }
-  Future<void> _addNewFood() async {
-    String foodNameIndex = foods.length.toString();
 
-    Food food = new Food(
-        'Food$foodNameIndex',
-        foodCategory[_random.nextInt(1)],
-        _random.nextInt(2000).toDouble(),
-        foodNationality[_random.nextInt(4)],
-        '123',
-        'assets/images/food${_random.nextInt(2) + 1}.jpg');
-    await dbHelper.insert(food);
+  Future<void> _addNewFood(Food newFood) async {
+    // String foodNameIndex = foods.length.toString();
+    await dbHelper.insert(newFood);
     await refreshFoodList();
     // List<Food>? foods = await MyDB().getFoods();
   }
