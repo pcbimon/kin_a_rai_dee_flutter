@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
+import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/widget/slidable_widget.dart';
 
 import '../dbOperator.dart';
@@ -55,14 +56,32 @@ class _FoodListsState extends State<FoodLists> {
     );
   }
 
+  _foodDetail(Food food) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FoodDetail(_update, food),
+        ));
+  }
+
+  _update(Food food) async {
+    await updateFood(food);
+    await widget.refreshFoodList();
+  }
+
+  _remove(int? id) async {
+    await removeFood(id!);
+    await widget.refreshFoodList();
+  }
+
   void dismissSlidableItem(
       BuildContext context, int index, SlidableAction action) {
     switch (action) {
       case SlidableAction.update:
-        Utils.showSnackBar(context, 'Update Data');
+        _foodDetail(items[index]);
         break;
       case SlidableAction.delete:
-        Utils.showSnackBar(context, 'Food will deleted');
+        _remove(items[index].id);
         break;
     }
   }

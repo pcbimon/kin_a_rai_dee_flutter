@@ -57,9 +57,21 @@ create table $tableFood (
     return food;
   }
 
+  Future<Food> update(Food food) async {
+    Database db = await instance.database;
+    food.id = await db.update(tableFood, food.toMap(),
+        where: '$columnId = ?', whereArgs: [food.id!]);
+    return food;
+  }
+
   Future<void> removeAllFood() async {
     Database db = await instance.database;
     await db.delete(tableFood);
+  }
+
+  Future<void> removeFood(int id) async {
+    Database db = await instance.database;
+    await db.delete(tableFood, where: '$columnId = ?', whereArgs: [id]);
   }
 
   // All of the rows are returned as a list of maps, where each map is

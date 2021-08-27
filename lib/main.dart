@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/page/about_me.dart';
 import 'package:kin_a_rai_dee/page/food_lists.dart';
-import 'package:kin_a_rai_dee/page/newFood.dart';
+import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => newFood(_addNewFood),
+          builder: (context) => FoodDetail(_addNewFood),
         ));
   }
 
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   refreshFoodList() async {
-    var getAll = await dbHelper.queryAllRows();
+    var getAll = await selectAllFood();
     setState(() {
       foods.clear();
       getAll.forEach((food) {

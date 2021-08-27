@@ -3,37 +3,39 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
 
-class newFood extends StatefulWidget {
-  final Function createFood;
+class FoodDetail extends StatefulWidget {
+  final Function createOrUpdateFood;
+  Food? food;
 
-  newFood(this.createFood);
+  FoodDetail(this.createOrUpdateFood, [this.food]);
 
   @override
-  State<newFood> createState() => _newFoodState();
+  State<FoodDetail> createState() => _FoodDetailState();
 }
 
-class _newFoodState extends State<newFood> {
+class _FoodDetailState extends State<FoodDetail> {
   final foodNameController = TextEditingController();
 
   final _random = new Random();
 
   final _formKey = GlobalKey<FormState>();
 
-  submitData(BuildContext context) {
-    Food newFood = new Food(
-        null,
+  submitData(BuildContext context, [int? id]) {
+    Food food = new Food(
+        id,
         foodNameController.text,
         foodCategory[_random.nextInt(1)],
         _random.nextInt(2000).toDouble(),
         foodNationality[_random.nextInt(4)],
-        '123',
+        'ทดสอบ',
         'assets/images/food${_random.nextInt(2) + 1}.jpg');
-    this.widget.createFood(newFood);
+    this.widget.createOrUpdateFood(food);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    foodNameController.text = (widget.food)!.foodName;
     return Scaffold(
       appBar: AppBar(
         title: Text('เพิ่มเมนูอาหารใหม่'),
@@ -54,18 +56,23 @@ class _newFoodState extends State<newFood> {
                   return null;
                 },
                 onFieldSubmitted: (value) => {
-                  if (_formKey.currentState!.validate()) {submitData(context)}
+                  if (_formKey.currentState!.validate())
+                    {submitData(context, (widget.food)!.id)}
                 },
               ),
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      submitData(context);
+                      submitData(context, (widget.food)!.id);
                     }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.add), Text('เพิ่มเมนูใหม่')],
+                    children: [
+                      (widget.food == null)
+                          ? Text('เพิ่มเมนูใหม่')
+                          : Text('แก้ไขเมนู')
+                    ],
                   ))
             ],
           ),

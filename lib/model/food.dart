@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../dbOperator.dart';
+
 /// `food` table name
 final String tableFood = 'food';
 
@@ -20,6 +22,7 @@ final List<String> foodNationality = [
 ];
 final double maxCalories = 2000;
 final double minCalories = 0;
+final dbHelper = DatabaseHelper.instance;
 
 class Food {
   int? id;
@@ -55,4 +58,25 @@ class Food {
     }
     return map;
   }
+}
+
+insertNewFood(Food food) async {
+  await dbHelper.insert(food);
+}
+
+removeAllFood() async {
+  await dbHelper.removeAllFood();
+}
+
+removeFood(int id) async {
+  await dbHelper.removeFood(id);
+}
+
+updateFood(Food food) async {
+  await dbHelper.update(food);
+}
+
+selectAllFood() async {
+  var getAll = await dbHelper.queryAllRows();
+  return getAll;
 }
