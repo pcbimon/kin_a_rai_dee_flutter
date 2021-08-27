@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class inputCalories extends StatefulWidget {
+class InputCalories extends StatefulWidget {
   final double maxCalories;
   final double currentCalories;
   final Function setCalories;
-  inputCalories(this.maxCalories, this.currentCalories, this.setCalories);
+  InputCalories(this.maxCalories, this.currentCalories, this.setCalories);
 
   @override
-  _inputCaloriesState createState() => _inputCaloriesState();
+  _InputCaloriesState createState() => _InputCaloriesState();
 }
 
-class _inputCaloriesState extends State<inputCalories> {
+class _InputCaloriesState extends State<InputCalories> {
   final calController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? validateCalories(double maxCal, String? currentCal) {

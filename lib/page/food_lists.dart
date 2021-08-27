@@ -4,7 +4,6 @@ import 'package:kin_a_rai_dee/model/food.dart';
 import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/widget/slidable_widget.dart';
 
-import '../dbOperator.dart';
 import '../utils.dart';
 
 class FoodLists extends StatefulWidget {

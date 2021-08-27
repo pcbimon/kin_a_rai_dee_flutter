@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/page/about_me.dart';
 import 'package:kin_a_rai_dee/page/food_lists.dart';
@@ -7,7 +5,6 @@ import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kin_a_rai_dee/utils.dart';
 
 import 'dbOperator.dart';
 import 'model/food.dart';
@@ -40,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Food> foods = [];
-  final _random = new Random();
   @override
   initState() {
     refreshFoodList();
@@ -95,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
         AboutMe()
       ][_currentTab],
       // key point, fab will show in Tab 1, and will hide in others.
-      floatingActionButton: _currentTab == 1 ? GroupFloating() : null,
+      floatingActionButton: _currentTab == 1 ? groupFloating() : null,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (index) => {setState(() => _currentTab = index)},
@@ -118,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  SpeedDial GroupFloating() {
+  SpeedDial groupFloating() {
     return SpeedDial(
       icon: Icons.menu,
       activeIcon: Icons.close,

@@ -2,13 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:json_store/json_store.dart';
-import 'package:kin_a_rai_dee/main.dart';
 import './model/food.dart';
 import './resultFood.dart';
 import './widget/inputCalories.dart';
 import './widget/selectCategory.dart';
-import 'dbOperator.dart';
 
 class RandomFood extends StatefulWidget {
   final List<Food> listFood;
@@ -54,7 +51,7 @@ class _RandomFoodState extends State<RandomFood> {
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          return inputCalories(maxCalories, currentCal, onChangeCalories);
+          return InputCalories(maxCalories, currentCal, onChangeCalories);
         });
   }
 
@@ -113,7 +110,7 @@ class _RandomFoodState extends State<RandomFood> {
                     ),
                     Row(
                       children: [
-                        category(
+                        Category(
                             foodCategory, _selectedCategory, onPressedCategory)
                       ],
                       mainAxisAlignment: MainAxisAlignment.center,

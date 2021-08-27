@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 import '../dbOperator.dart';
 
 /// `food` table name
