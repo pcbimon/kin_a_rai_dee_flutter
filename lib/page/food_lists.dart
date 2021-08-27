@@ -30,6 +30,44 @@ class _FoodListsState extends State<FoodLists> {
     super.initState();
   }
 
+  Future<void> _showMyDialog(Food food) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ยืนยันลบเมนู'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text('คุณแน่ใจว่าจะลบเมนู ${food.foodName} หรือไม่?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.redAccent,
+                onPrimary: Colors.white,
+              ),
+              child: Text('ยืนยัน'),
+              onPressed: () {
+                _remove(food.id);
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   updateFoodList() async {
     setState(() {
       items = widget.foods;
@@ -80,7 +118,7 @@ class _FoodListsState extends State<FoodLists> {
         _foodDetail(items[index]);
         break;
       case SlidableAction.delete:
-        _remove(items[index].id);
+        _showMyDialog(items[index]);
         break;
     }
   }
