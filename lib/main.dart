@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kin_a_rai_dee/page/about_me.dart';
 import 'package:kin_a_rai_dee/page/food_lists.dart';
+import 'package:kin_a_rai_dee/page/newFood.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -49,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentTab = 0;
 
   final dbHelper = DatabaseHelper.instance;
+  navigateNewFood(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => newFood(_addNewFood),
+        ));
+  }
   Future<void> _addNewFood() async {
     String foodNameIndex = foods.length.toString();
 
@@ -128,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Icon(Icons.add),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
-          onTap: () => _addNewFood(),
+          onTap: () => navigateNewFood(),
         ),
         SpeedDialChild(
           child: Icon(Icons.remove_circle_outline),
