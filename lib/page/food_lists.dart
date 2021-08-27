@@ -30,7 +30,7 @@ class _FoodListsState extends State<FoodLists> {
     super.initState();
   }
 
-  Future<void> _showMyDialog(Food food) async {
+  Future<void> _showConfirmDialog(Food food) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -118,7 +118,7 @@ class _FoodListsState extends State<FoodLists> {
         _foodDetail(items[index]);
         break;
       case SlidableAction.delete:
-        _showMyDialog(items[index]);
+        _showConfirmDialog(items[index]);
         break;
     }
   }

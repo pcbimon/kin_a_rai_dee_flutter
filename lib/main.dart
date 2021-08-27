@@ -56,14 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _addNewFood(Food newFood) async {
     // String foodNameIndex = foods.length.toString();
-    await dbHelper.insert(newFood);
+    await insertNewFood(newFood);
     await refreshFoodList();
     // List<Food>? foods = await MyDB().getFoods();
   }
 
   _clearDatabase() async {
-    await dbHelper.removeAllFood();
-    refreshFoodList();
+    await removeAllFood();
+    await refreshFoodList();
   }
 
   refreshFoodList() async {
@@ -75,6 +75,44 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       print('Current Food : ${foods.length}');
     });
+  }
+
+  Future<void> _showConfirmDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ยืนยันลบเมนู'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text('คุณแน่ใจว่าจะลบเมนูทั้งหมดหรือไม่?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.redAccent,
+                onPrimary: Colors.white,
+              ),
+              child: Text('ยืนยัน'),
+              onPressed: () {
+                _clearDatabase();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -131,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Icon(Icons.remove_circle_outline),
           backgroundColor: Colors.deepOrangeAccent,
           foregroundColor: Colors.white,
-          onTap: () => _clearDatabase(),
+          onTap: () => _showConfirmDialog(),
         )
       ],
     );
