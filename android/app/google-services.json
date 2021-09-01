@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "939435089765",
+    "project_id": "kin-a-rai-dee",
+    "storage_bucket": "kin-a-rai-dee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939435089765:android:cb78582efd4c8ab2eccb8c",
+        "android_client_info": {
+          "package_name": "com.example.kin_a_rai_dee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939435089765-4rsvbb9i0n66t0jbpqv8jeriv3gf07mb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE3Mc-I4Y2HBuZWhBACy0R_wP3_zNOl1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939435089765-4rsvbb9i0n66t0jbpqv8jeriv3gf07mb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
