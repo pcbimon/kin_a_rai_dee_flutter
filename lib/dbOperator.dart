@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'model/food.dart';
+import 'model/user.dart';
 
 class DatabaseHelper {
   static final _databaseName = "Food.db";
@@ -43,6 +44,12 @@ create table $tableFood (
   $columnNationality text not null,
   $columnDescription text not null,
   $columnImg text not null)
+''' +
+        '''
+create table $tableUser ( 
+  $columnId integer primary key autoincrement, 
+  $columnUserName text not null,
+  $columnTokenId text not null)
 ''');
   }
 
@@ -51,13 +58,13 @@ create table $tableFood (
   // Inserts a row in the database where each key in the Map is a column name
   // and the value is the column value. The return value is the id of the
   // inserted row.
-  Future<Food> insert(Food food) async {
+  Future<Food> insertFood(Food food) async {
     Database db = await instance.database;
     food.id = await db.insert(tableFood, food.toMap());
     return food;
   }
 
-  Future<Food> update(Food food) async {
+  Future<Food> updateFood(Food food) async {
     Database db = await instance.database;
     food.id = await db.update(tableFood, food.toMap(),
         where: '$columnId = ?', whereArgs: [food.id!]);
@@ -74,9 +81,32 @@ create table $tableFood (
     await db.delete(tableFood, where: '$columnId = ?', whereArgs: [id]);
   }
 
+  Future<User> insertUser(User user) async {
+    Database db = await instance.database;
+    user.id = await db.insert(tableUser, user.toMap());
+    return user;
+  }
+
+  Future<User> updateUser(User user) async {
+    Database db = await instance.database;
+    user.id = await db.update(tableUser, user.toMap(),
+        where: '$columnId = ?', whereArgs: [user.id!]);
+    return user;
+  }
+
+  Future<void> removeAllUser() async {
+    Database db = await instance.database;
+    await db.delete(tableUser);
+  }
+
+  Future<void> removeUser(int id) async {
+    Database db = await instance.database;
+    await db.delete(tableUser, where: '$columnId = ?', whereArgs: [id]);
+  }
+
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
-  Future<List<Food>> queryAllRows() async {
+  Future<List<Food>> queryAllRowsFood() async {
     Database db = await instance.database;
     List<Food> foods = [];
     List<Map> maps = await db.query(tableFood);
@@ -93,5 +123,18 @@ create table $tableFood (
       });
     }
     return foods;
+  }
+
+  Future<List<User>> queryAllRowsUser() async {
+    Database db = await instance.database;
+    List<User> users = [];
+    List<Map> maps = await db.query(tableUser);
+    if (maps.isNotEmpty) {
+      maps.forEach((element) {
+        users.add(new User(element[columnId], element[columnUserName],
+            element[columnTokenId]));
+      });
+    }
+    return users;
   }
 }
