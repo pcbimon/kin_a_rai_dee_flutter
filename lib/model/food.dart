@@ -59,7 +59,7 @@ class Food {
 }
 
 insertNewFood(Food food) async {
-  await dbHelper.insert(food);
+  await dbHelper.insertFood(food);
 }
 
 removeAllFood() async {
@@ -71,10 +71,10 @@ removeFood(int id) async {
 }
 
 updateFood(Food food) async {
-  await dbHelper.update(food);
+  await dbHelper.updateFood(food);
 }
 
 selectAllFood() async {
-  var getAll = await dbHelper.queryAllRows();
+  var getAll = await dbHelper.queryAllRowsFood();
   return getAll;
 }
