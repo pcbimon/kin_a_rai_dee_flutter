@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kin_a_rai_dee/google_sign_in.dart';
 import 'package:kin_a_rai_dee/page/google_profile.dart';
+import 'package:kin_a_rai_dee/page/launcher.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -49,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasData) {
-              return GoogleProfile();
+              return Launcher(widget.title);
             } else if (snapshot.hasError) {
               return Text('Something Wrong');
             } else {

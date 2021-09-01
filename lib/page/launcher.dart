@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
@@ -98,11 +99,37 @@ class _LauncherState extends State<Launcher> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          PopupMenuButton(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(user.photoURL!),
+                  radius: 30,
+                ),
+              ),
+              itemBuilder: (context) => [
+                    PopupMenuItem(
+                      child: Text("First"),
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text("Second"),
+                      value: 2,
+                    )
+                  ])
+          // IconButton(
+          //   icon: Image.network(user.photoURL!),
+          //   iconSize: 50,
+          //   onPressed: () {},
+          // )
+        ],
       ),
       body: [
         RandomFood(foods),

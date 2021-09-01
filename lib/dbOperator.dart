@@ -43,13 +43,13 @@ create table $tableFood (
   $columnCalories double not null,
   $columnNationality text not null,
   $columnDescription text not null,
-  $columnImg text not null)
+  $columnImg text not null);
 ''' +
         '''
 create table $tableUser ( 
   $columnId integer primary key autoincrement, 
   $columnUserName text not null,
-  $columnTokenId text not null)
+  $columnTokenId text not null);
 ''');
   }
 
