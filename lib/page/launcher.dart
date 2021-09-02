@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
+import 'package:provider/provider.dart';
 
 import '../dbOperator.dart';
+import '../google_sign_in.dart';
 import '../randomFood.dart';
 import 'about_me.dart';
 import 'foodDetail.dart';
@@ -111,18 +113,21 @@ class _LauncherState extends State<Launcher> {
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(user.photoURL!),
-                  radius: 30,
+                  // radius: 30,
                 ),
               ),
               itemBuilder: (context) => [
                     PopupMenuItem(
-                      child: Text("First"),
-                      value: 1,
+                      child: Row(
+                        children: [Icon(Icons.logout), Text("Sign Out")],
+                      ),
+                      onTap: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.logout();
+                      },
                     ),
-                    PopupMenuItem(
-                      child: Text("Second"),
-                      value: 2,
-                    )
                   ])
           // IconButton(
           //   icon: Image.network(user.photoURL!),
