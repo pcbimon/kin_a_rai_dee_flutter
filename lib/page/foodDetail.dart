@@ -35,7 +35,9 @@ class _FoodDetailState extends State<FoodDetail> {
 
   @override
   Widget build(BuildContext context) {
-    foodNameController.text = (widget.food)!.foodName;
+    if (widget.food != null) {
+      foodNameController.text = (widget.food)!.foodName;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('เพิ่มเมนูอาหารใหม่'),
