@@ -101,7 +101,9 @@ class _FoodDetailState extends State<FoodDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('เพิ่มเมนูอาหารใหม่'),
+        title: (widget.food == null)
+            ? Text('เพิ่มเมนูอาหารใหม่')
+            : Text('แก้ไขเมนูอาหาร'),
       ),
       body: Form(
           key: _formKey,
