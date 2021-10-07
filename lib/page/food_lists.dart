@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
@@ -128,10 +130,15 @@ class _FoodListsState extends State<FoodLists> {
           horizontal: 16,
           vertical: 16,
         ),
-        leading: CircleAvatar(
-          radius: 28,
-          backgroundImage: AssetImage(item.img),
-        ),
+        leading: item.img.length == 0
+            ? CircleAvatar(
+                radius: 28,
+                backgroundImage: AssetImage('assets/images/noimg.png'),
+              )
+            : CircleAvatar(
+                radius: 28,
+                backgroundImage: FileImage(File(item.img)),
+              ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
