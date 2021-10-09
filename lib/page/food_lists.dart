@@ -109,6 +109,8 @@ class _FoodListsState extends State<FoodLists> {
   }
 
   _remove(int? id) async {
+    Food food = items.singleWhere((element) => element.id == id);
+    await Utils.removeFoodImageFile(food.img);
     await removeFood(id!);
     await widget.refreshFoodList();
   }

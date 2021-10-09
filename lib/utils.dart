@@ -27,4 +27,14 @@ class Utils {
       return _appDocDirNewFolder.path;
     }
   }
+
+  static Future<int> removeFoodImageFile(String path) async {
+    try {
+      final file = File(path);
+      await file.delete();
+      return 0;
+    } catch (e) {
+      return 0;
+    }
+  }
 }

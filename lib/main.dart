@@ -5,6 +5,7 @@ import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/randomFood.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:kin_a_rai_dee/utils.dart';
 
 import 'dbOperator.dart';
 import 'model/food.dart';
@@ -62,6 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _clearDatabase() async {
+    foods.forEach((element) async {
+      await Utils.removeFoodImageFile(element.img);
+    });
     await removeAllFood();
     await refreshFoodList();
   }
