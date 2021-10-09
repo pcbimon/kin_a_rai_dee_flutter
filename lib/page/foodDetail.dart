@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
@@ -15,7 +14,7 @@ typedef void OnPickImageCallback(
 
 class FoodDetail extends StatefulWidget {
   final Function createOrUpdateFood;
-  Food? food;
+  final Food? food;
 
   FoodDetail(this.createOrUpdateFood, [this.food]);
 
@@ -26,8 +25,6 @@ class FoodDetail extends StatefulWidget {
 class _FoodDetailState extends State<FoodDetail> {
   final foodNameController = TextEditingController();
   final foodDescController = TextEditingController();
-
-  final _random = new Random();
 
   final _formKey = GlobalKey<FormState>();
   int _selectedCategory = 0;
