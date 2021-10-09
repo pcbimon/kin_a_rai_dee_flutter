@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 import 'package:flutter/material.dart';
@@ -8,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:kin_a_rai_dee/model/food.dart';
 import 'package:kin_a_rai_dee/widget/inputCalories.dart';
 import 'package:kin_a_rai_dee/widget/selectCategory.dart';
+
+import '../utils.dart';
 
 typedef void OnPickImageCallback(
     double? maxWidth, double? maxHeight, int? quality);
@@ -92,11 +93,10 @@ class _FoodDetailState extends State<FoodDetail> {
     if (image != null) {
       File tmpFile = File(image.path);
       // Get the path to the apps directory so we can save the file to it.
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String path = appDocDir.path;
+      final String path = await Utils.createFolderInAppDocDir('FoodImg');
       final String fileName = basename(image.path); // Filename
       // Save the file by copying it to the new location on the device.
-      tmpFile = await tmpFile.copy('$path/$fileName');
+      tmpFile = await tmpFile.copy('$path$fileName');
 
       setState(() {
         _selectedImage = tmpFile.path;
