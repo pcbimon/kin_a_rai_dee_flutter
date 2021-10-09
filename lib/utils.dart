@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class Utils {
-  static void showSnackBar(BuildContext context, String message) =>
-      Scaffold.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+  static void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   static Future<String> createFolderInAppDocDir(String folderName) async {
     //Get this App Document Directory
 

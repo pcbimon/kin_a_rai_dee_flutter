@@ -57,6 +57,7 @@ class _FoodDetailState extends State<FoodDetail> {
         _selectedImage);
     this.widget.createOrUpdateFood(food);
     Navigator.pop(context);
+    Utils.showSnackBar(context, "Update Foods List");
   }
 
   void onPressedCategory(int selectedIndex) {
