@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -91,8 +93,16 @@ class _FoodDetailState extends State<FoodDetail> {
     // Pick an image
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+      File tmpFile = File(image.path);
+      // Get the path to the apps directory so we can save the file to it.
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String path = appDocDir.path;
+      final String fileName = basename(image.path); // Filename
+      // Save the file by copying it to the new location on the device.
+      tmpFile = await tmpFile.copy('$path/$fileName');
+
       setState(() {
-        _selectedImage = image.path;
+        _selectedImage = tmpFile.path;
       });
     }
   }
