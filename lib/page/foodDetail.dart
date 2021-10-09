@@ -46,7 +46,14 @@ class _FoodDetailState extends State<FoodDetail> {
     super.initState();
   }
 
-  submitData(BuildContext context, [int? id]) {
+  submitData(BuildContext context, [int? id]) async {
+    //get Temp File from Image Picker
+    File getLocalImageFile = File(_selectedImage);
+    // Get the path to the apps directory so we can save the file to it.
+    final String path = await Utils.createFolderInAppDocDir('FoodImg');
+    final String fileName = basename(_selectedImage); // Filename
+    // Save the file by copying it to the new location on the device.
+    getLocalImageFile = await getLocalImageFile.copy('$path$fileName');
     Food food = new Food(
         id,
         foodNameController.text,
@@ -54,7 +61,7 @@ class _FoodDetailState extends State<FoodDetail> {
         _selectedCalories,
         _selectNationality,
         foodDescController.text,
-        _selectedImage);
+        getLocalImageFile.path);
     this.widget.createOrUpdateFood(food);
     Navigator.pop(context);
     Utils.showSnackBar(context, "Update Foods List");
@@ -92,15 +99,9 @@ class _FoodDetailState extends State<FoodDetail> {
     // Pick an image
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      File tmpFile = File(image.path);
-      // Get the path to the apps directory so we can save the file to it.
-      final String path = await Utils.createFolderInAppDocDir('FoodImg');
-      final String fileName = basename(image.path); // Filename
-      // Save the file by copying it to the new location on the device.
-      tmpFile = await tmpFile.copy('$path$fileName');
-
       setState(() {
-        _selectedImage = tmpFile.path;
+        //Set Path to Image Picker temp file
+        _selectedImage = image.path;
       });
     }
   }
