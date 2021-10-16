@@ -7,6 +7,7 @@ import 'package:kin_a_rai_dee/page/foodDetail.dart';
 import 'package:kin_a_rai_dee/widget/slidable_widget.dart';
 
 import '../utils.dart';
+import 'foodViewImage.dart';
 
 class FoodLists extends StatefulWidget {
   final List<Food> foods;
@@ -137,9 +138,12 @@ class _FoodListsState extends State<FoodLists> {
                 radius: 28,
                 backgroundImage: AssetImage('assets/images/noimg.png'),
               )
-            : CircleAvatar(
-                radius: 28,
-                backgroundImage: FileImage(File(item.img)),
+            : Hero(
+                tag: item.img,
+                child: CircleAvatar(
+                  radius: 28,
+                  backgroundImage: FileImage(File(item.img)),
+                ),
               ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,6 +156,12 @@ class _FoodListsState extends State<FoodLists> {
             Text(item.foodCategory)
           ],
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FoodViewImage(item),
+              ));
+        },
       );
 }
