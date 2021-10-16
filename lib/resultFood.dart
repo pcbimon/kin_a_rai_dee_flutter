@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './model/food.dart';
+import 'dart:io';
 
 class ResultFood extends StatelessWidget {
   final Food food;
@@ -25,7 +26,8 @@ class ResultFood extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 4 / 3,
                     child: Image(
-                      image: AssetImage(food.img),
+                      // Change read from asset to FileImage
+                      image: FileImage(File(food.img)),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -52,8 +54,8 @@ class ResultFood extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(10),
                       child: FittedBox(
-                        child:
-                            Text(food.foodCategory, style: TextStyle(fontSize: 14)),
+                        child: Text(food.foodCategory,
+                            style: TextStyle(fontSize: 14)),
                       ),
                     )
                   ],
